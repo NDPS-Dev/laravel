@@ -60,42 +60,42 @@ Official Laravel library for NTT DATA Payment Service.
 - To handle the response use below function which will return the final response array.
 
     ```sh
-       public function response()
-	{
-	 $decHashKey="KEYRESP123657234";
-	 $decSaltKey="8E41C78439831010F81F61C344B7BFC7";
-	 $decKey="8E41C78439831010F81F61C344B7BFC7";
-				  
-	 // to decrypt data
-	 $decrypted = $this->decrypt($_POST["encdata"], $decSaltKey, $decKey);
-			
-	 $array_response = explode('&', $decrypted); //change & to | for production
-	 $equalSplit = array();
-	 foreach ($array_response as $ar) {
-	   $equalSub = explode('=', $ar);
-	   if(!empty($equalSub[1]) && !empty($equalSub[0])){
-	     $temp = array(
-	        $equalSub[0] => $equalSub[1],
-	     );
-	     $equalSplit += $temp;
-	   }
-	 }
-			
-	 $str = $equalSplit["mmp_txn"].$equalSplit["mer_txn"].$equalSplit["f_code"].$equalSplit["prod"].$equalSplit["discriminator"].$equalSplit["amt"].$equalSplit["bank_txn"];
-			
-	 $signature =  hash_hmac("sha512",$str,$decHashKey,false);
-			
-	 // signature verification
-	 if($signature == $equalSplit["signature"]){
-	 	  if($equalSplit['f_code'] == "Ok"){
-	 		 echo "Success";
-	 		}else if($equalSplit['f_code'] == "F"){
-	 		 echo "Failed";
-	 		}else{
-	 		 echo "Cancelled";	
-	 	  }    
-	 } else {
-	 	echo "signature verification failed";
-	 }
-       }
+	   public function response()
+	     {
+	      include_once base_path('vendor/autoload.php');
+	      $transactionResponse = new \NDPS\TransactionResponse();
+
+	      /*
+	      **Enter the keys provided by NDPS
+	      */
+	      $transactionResponse->setRespHashKey("KEYRESP123657234");
+	      $transactionResponse->setResponseEncypritonKey("8E41C78439831010F81F61C344B7BFC7");
+	      $transactionResponse->setSalt("8E41C78439831010F81F61C344B7BFC7");
+	      $arrayofdata = $transactionResponse->decryptResponseIntoArray($_POST['encdata']);
+
+
+	      /*
+	      **Signature Verification for response and reponse verification
+	      */
+	      $verification = $transactionResponse->validateResponse($arrayofdata, "KEYRESP123657234");		
+	      if($verification){
+		// final logic
+		if($arrayofdata["f_code"] == "Ok"){
+		  echo "Transaction successful!";
+		}
+		elseif($arrayofdata["f_code"] == "C"){ 
+		  echo "Transaction Cancelled!";	
+		}
+		else{
+		  echo "Transaction Failed!";	
+		}	  
+	      }
+	      else{
+		echo "Transaction Failed!";
+	      }
+
+	       echo "<br><br>Response Array:<br>";
+	       print_r($arrayofdata);
+
+	    }   
     ```
