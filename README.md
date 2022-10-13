@@ -20,16 +20,16 @@ Official Laravel library for NTT DATA Payment Service.
 - To handle the request use below function which will provide the request URL.
 
     ```sh
-        public function payment()
+      public function payment()
 	 {
 	   include_once base_path('vendor/autoload.php');
 	   $transactionRequest = new \NDPS\TransactionRequest();
 
-           /* Add your return URL */
-           $ru = "http://127.0.0.1:8000/response";
+	   /* Add your return URL */
+	   $ru = "http://127.0.0.1:8000/response";
 
 	   /*
-           *Setting all values here
+	   *Setting all values here
 	   */
 	   $transactionRequest->setLogin('192');
 	   $transactionRequest->setPassword("Test@123");
