@@ -60,7 +60,7 @@ Official Laravel library for NTT DATA Payment Service.
 - To handle the response use below function which will return the final response array.
 
     ```sh
-        public function response()
+       public function response()
 	{
 	 $decHashKey="KEYRESP123657234";
 	 $decSaltKey="8E41C78439831010F81F61C344B7BFC7";
