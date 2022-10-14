@@ -1,4 +1,4 @@
-# atomlite/laravel
+# NDPS-Dev/laravel
 
 Official Laravel library for NTT DATA Payment Service.
 
