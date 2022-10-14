@@ -9,7 +9,7 @@ Official Laravel library for NTT DATA Payment Service.
 - If your project using composer, run the below command 
     
     ```sh
-    composer require ndps/laravel
+    composer require ndps/laravel:dev-main
     ```
 
 - If you are not using composer, download the latest release from the releases section. You should download the laravel.zip file from atomlite/laravel. And place in vendor folder.
