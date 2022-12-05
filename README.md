@@ -99,3 +99,27 @@ Official Laravel library for NTT DATA Payment Service.
 
 	    }   
     ```
+- Note: To handle above response as return URL we need defined method as post in routes/web.php file, also we need disable csrf validation for this response function
+edit following file app/Http/Middleware/VerifyCsrfToken.php
+
+```sh
+namespace App\Http\Middleware;
+use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken as Middleware;
+class VerifyCsrfToken extends Middleware
+{
+    /**
+     * Indicates whether the XSRF-TOKEN cookie should be set on the response.
+     *
+     * @var bool
+     */
+    protected $addHttpCookie = true;
+    /**
+     * The URIs that should be excluded from CSRF verification.
+     *
+     * @var array
+     */
+    protected $except = [
+        'response/'
+    ];
+}
+```
